@@ -14,26 +14,30 @@ public class Practica_3 extends JFrame
     private String nombre = "";
     private int puntos = 0;
     
+    //Attay e indice
+    private Cliente[] clientes;
+    private int indice = 0;
+    
     //Etiquetas para identificar los campos de texto
     private JLabel LNumero;
     private JLabel LNombre;
     private JLabel LEdad;
     private JLabel LPuntos;
     
-
-    //Cadenas para las etiquetas
-    /*private static String numeroString = "Número: ";
-    private static String dobleString = "El doble es: ";*/
-
+    
     //Text fields para introducir números (ahora son de Swing: JTextField)
     private JTextField numeroField;
-    private JTextField dobleField;
+    private JTextField nombreField;
     private JTextField edadField;
     private JTextField puntosField;
-
-    public Practica_3() {
+    
+    //Los button
+    private JButton botonAnterior, botonSiguiente;
+    
+    
+    public Practica_3(Cliente[] clientes) {
         super("Practica_3");
-
+        this.clientes = clientes;
         //Lo que pasa si cerramos la ventana (sustituye al WindowListener
         //con windowClosing y System.exit(0) de la versión anterior).
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -48,7 +52,13 @@ public class Practica_3 extends JFrame
         numeroField = new JTextField(10);
         edadField = new JTextField(10);
         puntosField = new JTextField(10);
-        dobleField = new JTextField(10);
+        nombreField = new JTextField(10);
+        
+        //Todos falsos
+        numeroField.setEditable(false);
+        nombreField.setEditable(false);
+        edadField.setEditable(false);
+        puntosField.setEditable(false);
 
         //Dispone la geometría de las etiquetas en un panel
         JPanel labelPane = new JPanel();
@@ -62,13 +72,31 @@ public class Practica_3 extends JFrame
         JPanel fieldPane = new JPanel();
         fieldPane.setLayout(new GridLayout(0, 1));
         fieldPane.add(numeroField);
-        fieldPane.add(dobleField);
+        fieldPane.add(nombreField);
         fieldPane.add(edadField);
         fieldPane.add(puntosField);
         
         /*LOS BOTONES CON SU PANE*/
-        JButton botonAnterior = new JButton("Anterior");
-        JButton botonSiguiente = new JButton("Siguiente");
+        botonAnterior = new JButton("Anterior");
+        botonSiguiente = new JButton("Siguiente");
+        botonAnterior.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if (indice > 0) {
+                    indice--;
+                    mostrarCliente();
+                }
+            }
+        });
+
+        botonSiguiente.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if (indice < Practica_3.this.clientes.length - 1) {
+                    indice++;
+                    mostrarCliente();
+                }
+            }
+        });
+        
         JPanel botonPane = new JPanel();
         botonPane.setLayout(new GridLayout(1, 0));
         botonPane.add(botonAnterior);
@@ -87,18 +115,20 @@ public class Practica_3 extends JFrame
 
         setContentPane(contentPane);  //this.setContentPane(contentPane);
           // es set, o sea, machado el contenedor del objeto "Doble", hijo de JFrame
-
+        mostrarCliente();   // muestra el primer cliente al abrir
     }
 
     public static void main(String[] args) {
-        Cliente [] clientes = new Cliente[3];
+        final Cliente[] clientes = new Cliente[3];
         clientes[0] = new Cliente(1, 20, "Pepe", 100);
         clientes[1] = new Cliente(2, 22, "Carla", 200);
         clientes[2] = new Cliente(3, 24, "Jose", 100);
+        
+        
         // Toda la interfaz Swing se crea en el hilo de eventos (receta: se hace siempre así).
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                final Practica_3 app = new Practica_3();
+                final Practica_3 app = new Practica_3(clientes);
 
                 //Este WindowListener ya solo sirve para poner el foco.
                 //(Para cerrar la ventana ya no hace falta: setDefaultCloseOperation.)
@@ -110,6 +140,18 @@ public class Practica_3 extends JFrame
                 app.setVisible(true);
             }
         });
+    }
+    
+    //Rellena los campos con el cliente actual y activa/desactiva los botones
+    private void mostrarCliente() {
+        Cliente c = clientes[indice];
+        numeroField.setText(String.valueOf(c.getNumero()));
+        nombreField.setText(c.getNombre());
+        edadField.setText(String.valueOf(c.getEdad()));
+        puntosField.setText(String.valueOf(c.getPuntos()));
+
+        botonAnterior.setEnabled(indice > 0);
+        botonSiguiente.setEnabled(indice < clientes.length - 1);
     }
 
 }
