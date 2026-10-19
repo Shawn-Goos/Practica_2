@@ -2,6 +2,7 @@ package Practica_3;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 
 import javax.swing.*;
 
@@ -90,7 +91,10 @@ public class Practica_3 extends JFrame
     }
 
     public static void main(String[] args) {
-
+        Cliente [] clientes = new Cliente[3];
+        clientes[0] = new Cliente(1, 20, "Pepe", 100);
+        clientes[1] = new Cliente(2, 22, "Carla", 200);
+        clientes[2] = new Cliente(3, 24, "Jose", 100);
         // Toda la interfaz Swing se crea en el hilo de eventos (receta: se hace siempre así).
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {

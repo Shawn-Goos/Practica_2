@@ -1,11 +1,18 @@
 package Practica_3;
 
 public class Cliente {
-    private int numero = 0;
-    private int edad = 0;
-    private String nombre = "";
-    private int puntos = 0;
+    private int numero;
+    private int edad;
+    private String nombre;
+    private int puntos;    
 
+    public Cliente(int numero, int edad, String nombre, int puntos) {
+        this.numero = numero;
+        this.edad = edad;
+        this.nombre = nombre;
+        this.puntos = puntos;
+    }
+    
     public int getNumero() {
         return numero;
     }
@@ -37,6 +44,10 @@ public class Cliente {
     public void setPuntos(int puntos) {
         this.puntos = puntos;
     }
+
+
+    
+    
     
     
 }
